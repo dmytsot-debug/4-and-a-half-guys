@@ -211,6 +211,34 @@ h1, h2, h3, h4 {
   color: var(--color-charcoal);
 }
 
+/* Real wordmark image inside the sticky header.
+   The wordmark is ~4:1, so we just set a height and let width auto-scale. */
+.site-header__logo-img {
+  height: 32px;
+  width: auto;
+  display: block;
+}
+@media (min-width: 768px) {
+  .site-header__logo-img { height: 38px; }
+}
+
+/* Round logo image inside the hero — drop-in replacement for the
+   square placeholder, so it inherits roughly the same footprint. */
+.hero__logo-img {
+  width: clamp(200px, 42vw, 320px);
+  height: auto;
+  display: block;
+}
+
+/* Wordmark in the footer — slightly bigger than the header version so
+   the centered footer block doesn't feel cramped. */
+.site-footer__logo-img {
+  height: 44px;
+  width: auto;
+  display: block;
+  margin-bottom: var(--space-sm);
+}
+
 /* The checker border under the header is hidden until scrolled */
 .site-header__border {
   opacity: 0;
