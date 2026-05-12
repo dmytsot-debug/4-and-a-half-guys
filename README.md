@@ -1,6 +1,6 @@
 # 4½ Guys — Pop-Up Site
 
-A one-page promotional website for **4½ Guys**, a 2-day pop-up burger business running **May 13–14** in the CBSS courtyard (Entrepreneurship 12, Charles Best Secondary).
+A one-page promotional website for **4½ Guys**, a 2-day pop-up burger business running **May 12–13 (blocks 2–4)** in the CBSS courtyard (Entrepreneurship 12, Charles Best Secondary).
 
 Built with plain HTML, CSS, and a tiny bit of JavaScript — no frameworks, no build step.
 
