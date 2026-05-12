@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="4½ Guys — traditional beef burgers. A pop-up burger event May 13–14 in the CBSS Courtyard." />
+  <meta name="theme-color" content="#D62828" />
+
+  <title>4½ Guys · Traditional Beef Burgers · May 13–14</title>
+
+  <!--
+    Favicon. Using an SVG favicon — modern browsers support it,
+    and it keeps everything inside the repo (no binary files).
+  -->
+  <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg" />
+
+  <!--
+    Google Fonts:
+      - Anton: bold condensed display font (matches the wordmark feel)
+      - Inter: clean, highly readable body font
+    Loaded with preconnect for a slight perf win.
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- =========================================================
+       STICKY HEADER
+       Sits above everything. Gains a checkered bottom border
+       once the user scrolls past the hero (toggled in script.js).
+       ========================================================= -->
+  <header class="site-header" id="siteHeader">
+    <div class="site-header__inner">
+      <a href="#top" class="site-header__logo" aria-label="4½ Guys home">
+        <!-- TODO: replace with real image at images/logo-small.jpg -->
+        <div class="logo-placeholder logo-placeholder--small" aria-hidden="true">4½</div>
+        <span class="site-header__wordmark">GUYS</span>
+      </a>
+
+      <span class="event-pill" aria-label="Event date and location">
+        <span class="event-pill__dot" aria-hidden="true"></span>
+        May 13–14 · CBSS Courtyard
+      </span>
+    </div>
+    <!-- Checkered border that becomes visible when the header is "stuck" -->
+    <div class="checker-strip checker-strip--xs site-header__border" aria-hidden="true"></div>
+  </header>
+
+  <main id="top">
+
+    <!-- =========================================================
+         1. HERO
+         Full-viewport-height intro. Checkered strips top/bottom,
+         big logo, tagline, CTA arrow.
+         ========================================================= -->
+    <section class="hero" aria-labelledby="heroTitle">
+      <div class="checker-strip checker-strip--md" aria-hidden="true"></div>
+
+      <div class="hero__content">
+        <!-- TODO: replace with real image at images/logo-full.jpg -->
+        <div class="logo-placeholder logo-placeholder--full" aria-hidden="true">
+          <span class="logo-placeholder__big">4½</span>
+          <span class="logo-placeholder__sub">GUYS</span>
+        </div>
+
+        <h1 id="heroTitle" class="hero__title">Traditional Beef Burgers</h1>
+        <p class="hero__subtitle">Four guys. One half guy. Zero compromises.</p>
+
+        <a href="#menu" class="hero__cta">
+          See the menu
+          <span class="hero__cta-arrow" aria-hidden="true">↓</span>
+        </a>
+      </div>
+
+      <div class="checker-strip checker-strip--md" aria-hidden="true"></div>
+    </section>
+
+    <!-- =========================================================
+         2. EVENT BANNER
+         Solid red full-width strip — the urgent "this is happening
+         this week" moment.
+         ========================================================= -->
+    <section class="event-banner reveal" aria-labelledby="eventTitle">
+      <div class="event-banner__inner">
+        <span class="event-banner__live">
+          <span class="event-banner__live-dot" aria-hidden="true"></span>
+          LIVE THIS WEEK
+        </span>
+        <h2 id="eventTitle" class="event-banner__title">POP-UP · MAY 13–14</h2>
+        <p class="event-banner__subtitle">CBSS Courtyard · Lunch</p>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         3. MENU
+         Four categories. Each item is a card with image placeholder,
+         name, dotted leader line, and price.
+         ========================================================= -->
+    <section class="menu" id="menu" aria-labelledby="menuTitle">
+      <header class="menu__intro reveal">
+        <h2 id="menuTitle" class="menu__heading">The Menu</h2>
+        <p class="menu__tagline">Made fresh in the courtyard. Made well.</p>
+      </header>
+
+      <!-- ===== BURGERS ===== -->
+      <div class="menu-category reveal">
+        <h3 class="menu-category__title">Burgers</h3>
+        <div class="menu-grid">
+
+          <article class="menu-card">
+            <img
+              src="images/burger-4-5-pounder.jpg"
+              alt="4½ Pounder burger stacked with cheese, lettuce, tomato, caramelized onions, pickles, and half-sauce"
+              class="menu-card__image"
+              loading="lazy"
+            />
+            <div class="menu-card__body">
+              <div class="menu-card__row">
+                <h4 class="menu-card__name">4½ Pounder</h4>
+                <span class="menu-card__leader" aria-hidden="true"></span>
+                <span class="menu-card__price">$8.50</span>
+              </div>
+              <p class="menu-card__desc">
+                Crispy buns, organic beef patty, cheese, and our signature half-sauce.
+              </p>
+              <p class="menu-card__addons">
+                <strong>Free add-ons:</strong> tomato, lettuce, caramelized onions, pickles.
+              </p>
+            </div>
+          </article>
+
+          <article class="menu-card">
+            <img
+              src="images/burger-half-pounder.jpg"
+              alt="½ Pounder cheeseburger with half-sauce on a brioche bun"
+              class="menu-card__image"
+              loading="lazy"
+            />
+            <div class="menu-card__body">
+              <div class="menu-card__row">
+                <h4 class="menu-card__name">½ Pounder</h4>
+                <span class="menu-card__leader" aria-hidden="true"></span>
+                <span class="menu-card__price">$5.50</span>
+              </div>
+              <p class="menu-card__desc">
+                Crispy buns, organic beef patty, cheese, and our signature half-sauce. That's it.
+              </p>
+            </div>
+          </article>
+
+        </div>
+      </div>
+
+      <!-- ===== FRIES ===== -->
+      <div class="menu-category reveal">
+        <h3 class="menu-category__title">Fries</h3>
+        <div class="menu-grid">
+
+          <article class="menu-card">
+            <img
+              src="images/fries.jpg"
+              alt="Plate of crispy golden Guy Fries seasoned with half-seasoning"
+              class="menu-card__image"
+              loading="lazy"
+            />
+            <div class="menu-card__body">
+              <div class="menu-card__row">
+                <h4 class="menu-card__name">Guy Fries</h4>
+                <span class="menu-card__leader" aria-hidden="true"></span>
+                <span class="menu-card__price">$2.50</span>
+              </div>
+              <p class="menu-card__desc">
+                Crispy golden fries seasoned with our special half-seasoning. Salty, a little spicy, really good.
+              </p>
+            </div>
+          </article>
+
+        </div>
+      </div>
+
+      <!-- ===== COMBO DEALS ===== -->
+      <div class="menu-category reveal">
+        <h3 class="menu-category__title">Combo Deals</h3>
+        <div class="menu-grid">
+
+          <article class="menu-card">
+            <!-- TODO: replace with real image at images/combo.jpg -->
+            <div class="menu-card__image" aria-hidden="true">4½ Combo</div>
+            <div class="menu-card__body">
+              <div class="menu-card__row">
+                <h4 class="menu-card__name">4½ Pounder Combo</h4>
+                <span class="menu-card__leader" aria-hidden="true"></span>
+                <span class="menu-card__price">$10.50</span>
+              </div>
+              <p class="menu-card__desc">
+                4½ Pounder + Guy Fries + drink of choice.
+              </p>
+            </div>
+          </article>
+
+          <article class="menu-card">
+            <!-- TODO: replace with real image at images/combo.jpg (reuse or swap) -->
+            <div class="menu-card__image" aria-hidden="true">½ Combo</div>
+            <div class="menu-card__body">
+              <div class="menu-card__row">
+                <h4 class="menu-card__name">½ Pounder Combo</h4>
+                <span class="menu-card__leader" aria-hidden="true"></span>
+                <span class="menu-card__price">$8.50</span>
+              </div>
+              <p class="menu-card__desc">
+                ½ Pounder + Guy Fries + drink of choice.
+              </p>
+            </div>
+          </article>
+
+        </div>
+      </div>
+
+      <!-- ===== DRINKS ===== -->
+      <div class="menu-category reveal">
+        <h3 class="menu-category__title">Drinks</h3>
+        <p class="menu-category__subtitle">$2.00 each</p>
+
+        <!-- TODO: replace bottle icons with real images at images/drinks.jpg if desired -->
+        <ul class="drinks-row" role="list">
+          <li class="drink-chip"><span class="drink-chip__icon" aria-hidden="true">🥤</span>Fuze</li>
+          <li class="drink-chip"><span class="drink-chip__icon" aria-hidden="true">🥤</span>Coke</li>
+          <li class="drink-chip"><span class="drink-chip__icon" aria-hidden="true">🥤</span>Pepsi</li>
+          <li class="drink-chip"><span class="drink-chip__icon" aria-hidden="true">🥤</span>Sprite</li>
+          <li class="drink-chip"><span class="drink-chip__icon" aria-hidden="true">🥤</span>Fanta</li>
+        </ul>
+      </div>
+
+    </section>
+
+    <!-- =========================================================
+         4. BACON BONUS STRIP
+         The upsell. Eye-catching but tasteful: cream background,
+         red checkered top and bottom, rotated BONUS badge.
+         ========================================================= -->
+    <section class="bonus reveal" aria-labelledby="bonusTitle">
+      <div class="checker-strip checker-strip--sm" aria-hidden="true"></div>
+
+      <div class="bonus__inner">
+        <span class="bonus__badge" aria-hidden="true">BONUS</span>
+        <h2 id="bonusTitle" class="bonus__title">
+          Add Crispy Bacon to any burger
+        </h2>
+        <p class="bonus__price">+ $1.00</p>
+      </div>
+
+      <div class="checker-strip checker-strip--sm" aria-hidden="true"></div>
+    </section>
+
+  </main>
+
+  <!-- =========================================================
+       FOOTER
+       Cream, simple, small logo, copyright + credit line.
+       ========================================================= -->
+  <footer class="site-footer">
+    <div class="checker-strip checker-strip--xs" aria-hidden="true"></div>
+
+    <div class="site-footer__inner">
+      <!-- TODO: replace with real image at images/logo-small.jpg -->
+      <div class="logo-placeholder logo-placeholder--small site-footer__logo" aria-hidden="true">4½</div>
+
+      <p class="site-footer__copy">
+        © 2026 4½ Guys · Entrepreneurship 12 · Charles Best Secondary
+      </p>
+      <p class="site-footer__credit">
+        Find us in the courtyard May 13–14.
+      </p>
+    </div>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>

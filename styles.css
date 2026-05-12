@@ -1,0 +1,701 @@
+/* =================================================================
+   4½ GUYS — styles.css
+   Organized top to bottom:
+     1. Design tokens (CSS variables)
+     2. Reset
+     3. Base typography
+     4. Utilities (.checker-strip, .reveal)
+     5. Layout components (header, hero, banner, menu, bonus, footer)
+     6. Logo / image placeholders
+     7. Media queries
+     8. Reduced-motion + focus styles
+   ================================================================= */
+
+
+/* =====================================================
+   1. DESIGN TOKENS
+   ===================================================== */
+:root {
+  /* ----- Colors ----- */
+  --color-red:        #D62828;
+  --color-red-dark:   #A81F1F;
+  --color-cream:      #FAF7F2;
+  --color-cream-2:    #F2EEE6;   /* slightly darker cream for subtle layering */
+  --color-white:      #FFFFFF;
+  --color-charcoal:   #1A1A1A;
+  --color-gray:       #5A5A5A;
+  --color-gray-light: #B8B4AC;
+  --color-yellow:     #FFD23F;
+
+  /* ----- Typography ----- */
+  --font-display: "Anton", "Bebas Neue", Impact, sans-serif;
+  --font-body:    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* Fluid type scale using clamp(min, preferred, max) */
+  --fs-xs:  0.875rem;                              /* 14px */
+  --fs-sm:  1rem;                                  /* 16px */
+  --fs-md:  1.25rem;                               /* 20px */
+  --fs-lg:  clamp(1.5rem, 2.5vw, 1.75rem);         /* ~24–28px */
+  --fs-xl:  clamp(2rem, 4vw, 2.5rem);              /* ~32–40px */
+  --fs-2xl: clamp(2.5rem, 6vw, 4rem);              /* ~40–64px */
+  --fs-3xl: clamp(3.5rem, 12vw, 7rem);             /* huge hero */
+
+  /* ----- Spacing scale ----- */
+  --space-xs:  0.5rem;
+  --space-sm:  1rem;
+  --space-md:  1.5rem;
+  --space-lg:  2.5rem;
+  --space-xl:  4rem;
+  --space-xxl: 6rem;
+
+  /* ----- Other ----- */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+
+  --shadow-card:       0 2px 6px rgba(0, 0, 0, 0.06);
+  --shadow-card-hover: 0 12px 28px rgba(0, 0, 0, 0.12);
+
+  --transition-fast: 150ms ease;
+  --transition-mid:  200ms ease;
+
+  --container-max: 1200px;
+}
+
+
+/* =====================================================
+   2. RESET (minimal, modern)
+   ===================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body,
+h1, h2, h3, h4, p, ul, figure {
+  margin: 0;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+
+/* =====================================================
+   3. BASE TYPOGRAPHY + BODY
+   ===================================================== */
+body {
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+  color: var(--color-charcoal);
+  background-color: var(--color-cream);
+
+  /* Very subtle paper grain — pure CSS, no external image.
+     Two thin radial gradients at low opacity = quiet texture. */
+  background-image:
+    radial-gradient(rgba(0, 0, 0, 0.018) 1px, transparent 1px),
+    radial-gradient(rgba(0, 0, 0, 0.012) 1px, transparent 1px);
+  background-size: 3px 3px, 7px 7px;
+  background-position: 0 0, 1px 2px;
+
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 400;        /* Anton is already heavy; its single weight is enough */
+  line-height: 1;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+
+/* =====================================================
+   4. UTILITIES
+   ===================================================== */
+
+/* ----- The signature checkered strip -----
+   Built with a single conic-gradient. The --size variable
+   controls the square size; modifier classes change it.
+   Used as: top/bottom of hero, around bonus strip,
+   under sticky header, top of footer. */
+.checker-strip {
+  --size: 16px;
+  height: var(--size);
+  width: 100%;
+  background:
+    conic-gradient(
+      var(--color-red) 25%,
+      var(--color-white) 0 50%,
+      var(--color-red) 0 75%,
+      var(--color-white) 0
+    )
+    0 0 / var(--size) var(--size);
+}
+.checker-strip--xs { --size: 8px;  height: 8px;  }
+.checker-strip--sm { --size: 12px; height: 12px; }
+.checker-strip--md { --size: 18px; height: 18px; }
+
+/* ----- Fade-in-on-scroll utility -----
+   JS adds .is-visible once the element enters the viewport. */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 600ms ease, transform 600ms ease;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* =====================================================
+   5. STICKY HEADER
+   ===================================================== */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background-color: rgba(250, 247, 242, 0.85);  /* cream w/ alpha */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: background-color var(--transition-mid), box-shadow var(--transition-mid);
+}
+
+.site-header__inner {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0.75rem var(--space-md);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+
+.site-header__logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.site-header__wordmark {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  letter-spacing: 0.08em;
+  color: var(--color-charcoal);
+}
+
+/* The checker border under the header is hidden until scrolled */
+.site-header__border {
+  opacity: 0;
+  transition: opacity var(--transition-mid);
+}
+.site-header.is-stuck .site-header__border {
+  opacity: 1;
+}
+.site-header.is-stuck {
+  background-color: rgba(250, 247, 242, 0.95);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+}
+
+/* The "May 13–14 · CBSS Courtyard" pill */
+.event-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--color-red);
+  color: var(--color-red);
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.6);
+}
+.event-pill__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-red);
+  animation: pulse 1.8s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1;   transform: scale(1);   }
+  50%      { opacity: 0.5; transform: scale(0.9); }
+}
+
+
+/* =====================================================
+   6. HERO
+   ===================================================== */
+.hero {
+  min-height: 100vh;
+  min-height: 100dvh;            /* dynamic viewport height on mobile */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  background-color: var(--color-cream);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: var(--space-xl) var(--space-md);
+  gap: var(--space-md);
+}
+
+.hero__title {
+  font-size: var(--fs-2xl);
+  color: var(--color-charcoal);
+  margin-top: var(--space-md);
+}
+
+.hero__subtitle {
+  font-size: var(--fs-md);
+  color: var(--color-gray);
+  max-width: 36ch;
+  font-weight: 500;
+}
+
+.hero__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: var(--space-md);
+  padding: 0.85rem 1.6rem;
+  border-radius: 999px;
+  background-color: var(--color-charcoal);
+  color: var(--color-cream);
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  letter-spacing: 0.02em;
+  transition: background-color var(--transition-mid), transform var(--transition-mid);
+}
+.hero__cta:hover,
+.hero__cta:focus-visible {
+  background-color: var(--color-red);
+  transform: translateY(-2px);
+}
+.hero__cta-arrow {
+  display: inline-block;
+  animation: bounce 1.6s ease-in-out infinite;
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(4px); }
+}
+
+
+/* =====================================================
+   7. EVENT BANNER (red strip)
+   ===================================================== */
+.event-banner {
+  background-color: var(--color-red);
+  color: var(--color-cream);
+  text-align: center;
+  padding: var(--space-xl) var(--space-md);
+}
+
+.event-banner__inner {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.event-banner__live {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 999px;
+  text-transform: uppercase;
+}
+.event-banner__live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-cream);
+  animation: pulse 1.8s ease-in-out infinite;
+}
+
+.event-banner__title {
+  font-size: var(--fs-3xl);
+  line-height: 0.95;
+}
+
+.event-banner__subtitle {
+  font-size: var(--fs-lg);
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+
+/* =====================================================
+   8. MENU
+   ===================================================== */
+.menu {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: var(--space-xxl) var(--space-md);
+}
+
+.menu__intro {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+.menu__heading {
+  font-size: var(--fs-2xl);
+  color: var(--color-charcoal);
+}
+.menu__tagline {
+  margin-top: var(--space-xs);
+  font-size: var(--fs-md);
+  color: var(--color-gray);
+}
+
+/* Category */
+.menu-category {
+  margin-bottom: var(--space-xl);
+}
+.menu-category__title {
+  font-size: var(--fs-xl);
+  color: var(--color-red);
+  padding-bottom: var(--space-xs);
+  margin-bottom: var(--space-md);
+  border-bottom: 2px solid var(--color-charcoal);
+  display: inline-block;
+}
+.menu-category__subtitle {
+  font-size: var(--fs-sm);
+  color: var(--color-gray);
+  margin-bottom: var(--space-md);
+}
+
+/* Grid of cards */
+.menu-grid {
+  display: grid;
+  gap: var(--space-md);
+  grid-template-columns: 1fr;   /* mobile default */
+}
+
+/* Individual card */
+.menu-card {
+  background-color: var(--color-white);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition: transform var(--transition-mid), box-shadow var(--transition-mid);
+  display: flex;
+  flex-direction: column;
+}
+.menu-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* Image area inside the menu card. Square (1:1) to match the
+   square product photos. `object-fit: cover` makes <img> tags
+   fill the box without distortion; the flex/font rules below
+   are for placeholder <div>s that are still in use. */
+.menu-card__image {
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  object-fit: cover;            /* applies to <img> */
+  background-color: var(--color-cream-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  color: var(--color-gray-light);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.menu-card__body {
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+/* The classic diner-menu row: name ········ price */
+.menu-card__row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+.menu-card__name {
+  font-size: var(--fs-lg);
+  color: var(--color-charcoal);
+}
+.menu-card__leader {
+  flex: 1;
+  border-bottom: 2px dotted var(--color-gray-light);
+  transform: translateY(-4px); /* lift the dots slightly so they sit nicer */
+}
+.menu-card__price {
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  color: var(--color-red);
+}
+
+.menu-card__desc {
+  font-size: var(--fs-sm);
+  color: var(--color-charcoal);
+}
+.menu-card__addons {
+  font-size: var(--fs-xs);
+  color: var(--color-gray);
+}
+
+/* Drinks row */
+.drinks-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+.drink-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-cream-2);
+  border-radius: 999px;
+  padding: 0.6rem 1.1rem;
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  box-shadow: var(--shadow-card);
+  transition: transform var(--transition-mid), border-color var(--transition-mid);
+}
+.drink-chip:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-red);
+}
+.drink-chip__icon {
+  font-size: 1.1rem;
+}
+
+
+/* =====================================================
+   9. BACON BONUS STRIP
+   ===================================================== */
+.bonus {
+  background-color: var(--color-cream);
+  position: relative;
+  margin-top: var(--space-lg);
+}
+
+.bonus__inner {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-md);
+  text-align: center;
+  position: relative;
+}
+
+.bonus__title {
+  font-size: var(--fs-2xl);
+  color: var(--color-charcoal);
+  line-height: 1.05;
+}
+
+.bonus__price {
+  margin-top: var(--space-sm);
+  font-family: var(--font-display);
+  font-size: var(--fs-2xl);
+  color: var(--color-red);
+}
+
+/* The tilted yellow BONUS sticker badge */
+.bonus__badge {
+  position: absolute;
+  top: var(--space-md);
+  right: var(--space-md);
+  display: inline-block;
+  background-color: var(--color-yellow);
+  color: var(--color-charcoal);
+  font-family: var(--font-display);
+  font-size: var(--fs-md);
+  padding: 0.4rem 0.9rem;
+  border-radius: var(--radius-sm);
+  transform: rotate(8deg);
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.08);
+  letter-spacing: 0.06em;
+}
+
+
+/* =====================================================
+   10. FOOTER
+   ===================================================== */
+.site-footer {
+  background-color: var(--color-cream);
+}
+.site-footer__inner {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-md);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+.site-footer__logo {
+  margin-bottom: var(--space-sm);
+}
+.site-footer__copy {
+  font-size: var(--fs-xs);
+  color: var(--color-gray);
+}
+.site-footer__credit {
+  font-size: var(--fs-xs);
+  color: var(--color-gray);
+}
+
+
+/* =====================================================
+   11. LOGO / IMAGE PLACEHOLDERS
+   These mimic the eventual real image footprint so you
+   can swap in JPGs later without layout shift.
+   ===================================================== */
+.logo-placeholder {
+  background-color: var(--color-red);
+  color: var(--color-cream);
+  font-family: var(--font-display);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.02em;
+}
+
+.logo-placeholder--small {
+  width: 36px;
+  height: 36px;
+  font-size: 1rem;
+}
+
+.logo-placeholder--full {
+  width: clamp(180px, 40vw, 280px);
+  height: clamp(180px, 40vw, 280px);
+  border-radius: var(--radius-lg);
+  flex-direction: column;
+  text-align: center;
+  /* Faux checker corner accents using box-shadow inset — subtle. */
+  background:
+    conic-gradient(
+      from 0deg,
+      var(--color-red) 25%,
+      var(--color-red-dark) 0 50%,
+      var(--color-red) 0 75%,
+      var(--color-red-dark) 0
+    )
+    0 0 / 60px 60px;
+  background-color: var(--color-red);
+}
+.logo-placeholder__big {
+  font-size: clamp(4rem, 12vw, 6rem);
+  line-height: 0.85;
+}
+.logo-placeholder__sub {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  letter-spacing: 0.1em;
+  margin-top: 0.25rem;
+}
+
+
+/* =====================================================
+   12. RESPONSIVE BREAKPOINTS
+     - 480px : tighter mobile adjustments
+     - 768px : tablet — menu becomes 2-column
+     - 1024px : small desktop — bigger banner type
+     - 1280px : large desktop — burgers 2-col, drinks/sides comfortable
+   ===================================================== */
+
+/* Tablet */
+@media (min-width: 768px) {
+  .menu-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .site-header__inner {
+    padding: 1rem var(--space-lg);
+  }
+  .menu {
+    padding: var(--space-xxl) var(--space-lg);
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .event-banner {
+    padding: var(--space-xxl) var(--space-md);
+  }
+}
+
+
+/* =====================================================
+   13. ACCESSIBILITY: focus + reduced motion
+   ===================================================== */
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid var(--color-red);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
